@@ -1,3 +1,5 @@
+// dotnet new webapi --use-controllers Para crear el webapi
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

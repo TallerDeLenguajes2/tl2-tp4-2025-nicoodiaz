@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "nombre": "Pepe",
+        "direccion": "Florida 231",
+        "telefono": "34123512"
+    },
+    {
+        "id": 2,
+        "nombre": "Juan",
+        "direccion": "Florida 412",
+        "telefono": "34123512"
+    },
+    {
+        "id": 3,
+        "nombre": "Pedro",
+        "direccion": "Florida 523",
+        "telefono": "34123512"
+    },
+    {
+        "id": 4,
+        "nombre": "Daniel",
+        "direccion": "Florida 512",
+        "telefono": "34123512"
+    },
+    {
+        "id": 5,
+        "nombre": "Pablo",
+        "direccion": "Florida 32",
+        "telefono": "34123512"
+    }
+]
