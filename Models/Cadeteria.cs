@@ -7,7 +7,7 @@ using ApiWeb;
 public class Cadeteria
 {
     const int PRECIO_ENTREGA = 500;
-    private static Cadeteria cadeteria;
+/*     private static Cadeteria cadeteria;
 
     public static Cadeteria GetCadeteria()
     {
@@ -16,7 +16,7 @@ public class Cadeteria
             cadeteria = new Cadeteria();
         }
         return cadeteria;
-    }
+    } */
     [JsonPropertyName("nombre")]
     public string Nombre { get; set; }
     [JsonPropertyName("telefono")]
@@ -90,7 +90,7 @@ public class Cadeteria
         var existePedido = BuscarPedido(nroPedido);
         if (existePedido is not null) return false; // Veo si ya existe un pedido con ese numero
 
-        var nuevoPedido = new Pedido(nroPedido, observacion, EstadoPedido.Pendiente);
+        var nuevoPedido = new Pedido(nroPedido, observacion, EstadoPedido.Pendiente, null);
 
         ListadoPedidos.Add(nuevoPedido);
         return true;

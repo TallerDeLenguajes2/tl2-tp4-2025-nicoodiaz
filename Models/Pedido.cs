@@ -1,16 +1,23 @@
 namespace ApiWeb;
 
+using System.Text.Json.Serialization;
 using ApiWeb;
 public class Pedido
 {
-
+    [JsonPropertyName("id")]
     public int NumeroPedido { get; set; } //Para que no se pueda cambiar fuera de la clase
+    [JsonPropertyName("observacion")]
     public string Observacion { get; set; }
+    [JsonPropertyName("estadoPedido")]
     public EstadoPedido EstadoActualDelPedido { get; set; }
-    
+    [JsonPropertyName("cadete")]
     public Cadete Cadete { get; set; }
+    public Pedido()
+    {
+        
+    }
 
-    public Pedido(int numeroPedido, string observacionPedido, EstadoPedido estado)
+    public Pedido(int numeroPedido, string observacionPedido, EstadoPedido estado, Cadete cadete)
     {
         NumeroPedido = numeroPedido;
         Observacion = observacionPedido;

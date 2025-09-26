@@ -8,13 +8,18 @@ namespace tl2_tp4_2025_nicoodiaz.Controllers;
 public class CadeteriaController : ControllerBase
 {
     private readonly Cadeteria laCadeteria;
-    private AccesoADatosJSON accesoADatos;
+    private AccesoADatosCadeteria ADCadeteria;
+    private AccesoADatosCadetes ADCadetes;
+    private AccesoADatosPedidos ADPedidos;
     public CadeteriaController()
     {
-        accesoADatos = new AccesoADatosJSON();
-        laCadeteria = accesoADatos.CrearCadeteria("Datos/cadeteria.json");
+        ADCadeteria = new AccesoADatosCadeteria();
+        ADCadetes = new AccesoADatosCadetes();
+        ADPedidos = new AccesoADatosPedidos();
+        laCadeteria = ADCadeteria.CrearCadeteria();
         //laCadeteria = Cadeteria.GetCadeteria();
-        laCadeteria.ListadoCadetes = accesoADatos.CargarCadete("Datos/cadetes.json");
+        laCadeteria.ListadoCadetes = ADCadetes.CargarCadete();
+        laCadeteria.ListadoPedidos = ADPedidos.CargarPedidos();
     }
 
     [HttpGet("cadeteria")]
@@ -49,6 +54,7 @@ public class CadeteriaController : ControllerBase
     public IActionResult AgregarPedido(int nroPedido, string observacion)
     {
         if (!laCadeteria.DarAltaPedido(nroPedido, observacion)) return BadRequest("Fallo al crear pedido");
+        ADPedidos.GuardarPedidos(laCadeteria.ListadoPedidos);
         return Created();
     }
 
@@ -56,6 +62,7 @@ public class CadeteriaController : ControllerBase
     public IActionResult AsignarPedido(int idPedido, int idCadete)
     {
         if (!laCadeteria.AsignarCadetePedido(idPedido, idCadete)) return NotFound("Fallo al asignar pedido");
+        ADPedidos.GuardarPedidos(laCadeteria.ListadoPedidos);
         return Ok("Pedido asignado");
     }
 
@@ -63,6 +70,7 @@ public class CadeteriaController : ControllerBase
     public IActionResult CambiarEstadoPedido(int idPedido, EstadoPedido nuevoEstado)
     {
         if (!laCadeteria.CambiarEstado(idPedido, nuevoEstado)) return NotFound("No se pudo cambiar estado");
+        ADPedidos.GuardarPedidos(laCadeteria.ListadoPedidos);
         return Ok("Estado cambiado");
     }
 
@@ -70,6 +78,7 @@ public class CadeteriaController : ControllerBase
     public IActionResult CambiarCadetePedido(int idPedido, int idNuevoCadete)
     {
         if (!laCadeteria.ReasignarPedido(idPedido, idNuevoCadete)) return NotFound("No se cambio el cadete");
+        ADPedidos.GuardarPedidos(laCadeteria.ListadoPedidos);
         return Ok("Cadete reasignado");
     }
 }
