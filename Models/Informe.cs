@@ -3,19 +3,13 @@ using ApiWeb;
 
 public class InformeCadete
 {
-    private int idCadete;
-    private string direccionCadete;
-    private int cantPedidosEntregados;
-    private int cantPedidosAsignados;
-    private int cantPedidosIngresados;
-    private double montoGanado;
 
-    public int IdCadete { get => idCadete; set => idCadete = value; }
-    public string DireccionCadete { get => direccionCadete; set => direccionCadete = value; }
-    public int CantPedidosEntregados { get => cantPedidosEntregados; set => cantPedidosEntregados = value; }
-    public int CantPedidosAsignados { get => cantPedidosAsignados; set => cantPedidosAsignados = value; }
-    public int CantPedidosIngresados { get => cantPedidosIngresados; set => cantPedidosIngresados = value; }
-    public double MontoGanado { get => montoGanado; set => montoGanado = value; }
+    public int IdCadete { get; set; }
+    public string DireccionCadete { get; set; }
+    public int CantPedidosEntregados { get; set; }
+    public int CantPedidosAsignados { get; set; }
+    public int CantPedidosIngresados { get; set; }
+    public double MontoGanado { get; set; }
 }
 
 public class Informe

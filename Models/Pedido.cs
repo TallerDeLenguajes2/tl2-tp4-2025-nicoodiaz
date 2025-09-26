@@ -3,25 +3,19 @@ namespace ApiWeb;
 using ApiWeb;
 public class Pedido
 {
-    private int numeroPedido;
-    private string observacion;
-    //private Cliente datosCliente;
-    private EstadoPedido estadoActualDelPedido;
-    private Cadete cadete;
 
-
-    public int NumeroPedido { get => numeroPedido; } //Para que no se pueda cambiar fuera de la clase
-    public string Observacion { get => observacion; set => observacion = value; }
-    public EstadoPedido EstadoActualDelPedido { get => estadoActualDelPedido; set => estadoActualDelPedido = value; }
+    public int NumeroPedido { get; set; } //Para que no se pueda cambiar fuera de la clase
+    public string Observacion { get; set; }
+    public EstadoPedido EstadoActualDelPedido { get; set; }
     
-    public Cadete Cadete { get => cadete; set => cadete = value; }
+    public Cadete Cadete { get; set; }
 
     public Pedido(int numeroPedido, string observacionPedido, EstadoPedido estado)
     {
-        this.numeroPedido = numeroPedido;
-        this.observacion = observacionPedido;
+        NumeroPedido = numeroPedido;
+        Observacion = observacionPedido;
         //this.datosCliente = new Cliente(nombreCliente, direccionCliente, telefonoCliente, datosReferencia); //Creo por composicion Cliente-Pedido
-        this.estadoActualDelPedido = estado;
+        EstadoActualDelPedido = estado;
     }
 
 /*     public string VerDireccionCliente()

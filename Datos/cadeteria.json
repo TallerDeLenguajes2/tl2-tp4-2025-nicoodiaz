@@ -1,6 +1,6 @@
-[
-    {
-        "nombre" : "Rico y casero",
-        "telefono" : "3815760977"
-    }
-]
+{
+  "nombre": "Rico y casero",
+  "telefono": "3815760977",
+  "listadoCadetes": [],
+  "listadoPedidos": []
+}

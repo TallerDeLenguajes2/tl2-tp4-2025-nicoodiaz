@@ -7,15 +7,22 @@ namespace tl2_tp4_2025_nicoodiaz.Controllers;
 [Route("api/cadeteria")]
 public class CadeteriaController : ControllerBase
 {
-    private Cadeteria laCadeteria;
+    private readonly Cadeteria laCadeteria;
     private AccesoADatosJSON accesoADatos;
     public CadeteriaController()
     {
         accesoADatos = new AccesoADatosJSON();
-        //var Cadeteria = accesoADatos.CrearCadeteria("../Datos/cadeteria.json");
-        laCadeteria = Cadeteria.GetCadeteria();
+        laCadeteria = accesoADatos.CrearCadeteria("Datos/cadeteria.json");
+        //laCadeteria = Cadeteria.GetCadeteria();
+        laCadeteria.ListadoCadetes = accesoADatos.CargarCadete("Datos/cadetes.json");
     }
 
+    [HttpGet("cadeteria")]
+    public IActionResult GetCadeteria()
+    {
+        string info = $"{laCadeteria.Nombre} | {laCadeteria.Telefono}";
+        return Ok(info);
+    }
     [HttpGet("pedidos")]
     public IActionResult GetPedidos()
     {
@@ -38,11 +45,11 @@ public class CadeteriaController : ControllerBase
         string informeParaJSON = informe.GenerarInformeJSON(laCadeteria);
         return Ok(informeParaJSON);
     }
-    [HttpPost("agregarPedido/{pedido}")]
-    public IActionResult AgregarPedido(Pedido pedido)
+    [HttpPost("agregarPedido")]
+    public IActionResult AgregarPedido(int nroPedido, string observacion)
     {
-        if (!laCadeteria.DarAltaPedido(pedido.NumeroPedido, pedido.Observacion)) return NotFound("Fallo al crear pedido");
-        return Ok("Pedido Creado");
+        if (!laCadeteria.DarAltaPedido(nroPedido, observacion)) return BadRequest("Fallo al crear pedido");
+        return Created();
     }
 
     [HttpPut("asignar")]
@@ -51,14 +58,14 @@ public class CadeteriaController : ControllerBase
         if (!laCadeteria.AsignarCadetePedido(idPedido, idCadete)) return NotFound("Fallo al asignar pedido");
         return Ok("Pedido asignado");
     }
-/* 
+
     [HttpPut("cambiarEstado")]
-    public IActionResult CambiarEstadoPedido(int idPedido, int nuevoEstado)
+    public IActionResult CambiarEstadoPedido(int idPedido, EstadoPedido nuevoEstado)
     {
         if (!laCadeteria.CambiarEstado(idPedido, nuevoEstado)) return NotFound("No se pudo cambiar estado");
         return Ok("Estado cambiado");
     }
- */
+
     [HttpPut("reasignar")]
     public IActionResult CambiarCadetePedido(int idPedido, int idNuevoCadete)
     {

@@ -2,6 +2,7 @@ namespace ApiWeb;
 
 using System.Data.Common;
 using System.Linq.Expressions;
+using System.Text.Json.Serialization;
 using ApiWeb;
 public class Cadeteria
 {
@@ -16,20 +17,21 @@ public class Cadeteria
         }
         return cadeteria;
     }
+    [JsonPropertyName("nombre")]
+    public string Nombre { get; set; }
+    [JsonPropertyName("telefono")]
 
-    private string nombre;
-    private string telefono;
-    private List<Cadete> listadoCadetes;
-    private List<Pedido> listadoPedidos;
+    public string Telefono { get; set; }
+    [JsonPropertyName("listadoCadetes")]
 
-    public string Nombre { get => nombre; }
-    public string Telefono { get => telefono; }
-    public List<Cadete> ListadoCadetes { get => listadoCadetes; set => listadoCadetes = value; }
-    public List<Pedido> ListadoPedidos { get => listadoPedidos; set => listadoPedidos = value; }
+    public List<Cadete> ListadoCadetes { get; set; } = [];
+    [JsonPropertyName("listadoPedidos")]
+
+    public List<Pedido> ListadoPedidos { get; set; } = [];
 
     public Cadeteria()
     {
-        nombre = "Rico y Casero";
+/*         nombre = "Rico y Casero";
         telefono = "3815971655";
         listadoCadetes = new List<Cadete>();
         listadoPedidos = new List<Pedido>();
@@ -46,15 +48,15 @@ public class Cadeteria
         listadoPedidos.Add(new Pedido(6, "Pedido 6", 0));
         listadoPedidos.Add(new Pedido(7, "Pedido 7", 0));
         listadoPedidos.Add(new Pedido(8, "Pedido 8", 0));
-        listadoPedidos.Add(new Pedido(9, "Pedido 9", 0));
+        listadoPedidos.Add(new Pedido(9, "Pedido 9", 0)); */
     }
     public List<Pedido> GetPedidos()
     {
-        return listadoPedidos;
+        return ListadoPedidos;
     }
     public List<Cadete> GetCadetes()
     {
-        return listadoCadetes;
+        return ListadoCadetes;
     }
 
     public Cadete BuscarCadetePorId(int idCadete)
@@ -71,9 +73,15 @@ public class Cadeteria
     {
         var existeCadete = BuscarCadetePorId(idCadete);
         if (existeCadete is not null) return false;
-        var nuevoCadete = new Cadete(idCadete, nombre, direccion, telefono);
+        var nuevoCadete = new Cadete()
+        {
+            Id = idCadete,
+            Nombre = nombre,
+            Telefono = telefono,
+            Direccion = direccion
+        };
 
-        listadoCadetes.Add(nuevoCadete);
+        ListadoCadetes.Add(nuevoCadete);
         return true;
 
     }
@@ -84,7 +92,7 @@ public class Cadeteria
 
         var nuevoPedido = new Pedido(nroPedido, observacion, EstadoPedido.Pendiente);
 
-        listadoPedidos.Add(nuevoPedido);
+        ListadoPedidos.Add(nuevoPedido);
         return true;
 
     }
@@ -148,7 +156,7 @@ public class Cadeteria
     {
         int cantPedidos = 0;
 
-        foreach (var pedido in listadoPedidos)
+        foreach (var pedido in ListadoPedidos)
         {
             if (pedido.EstadoActualDelPedido == EstadoPedido.Entregado && pedido.Cadete != null && pedido.Cadete.Id == idCadete)
                 cantPedidos++;
@@ -158,7 +166,7 @@ public class Cadeteria
     public int CantidadPedidosAsignados(int idCadete)
     {
         int cantPedidosAsignados = 0;
-        foreach (var pedido in listadoPedidos)
+        foreach (var pedido in ListadoPedidos)
         {
             if (pedido.EstadoActualDelPedido == EstadoPedido.Asignado && pedido.Cadete != null && pedido.Cadete.Id == idCadete)
             {
@@ -170,7 +178,7 @@ public class Cadeteria
     public int CantidadPedidosIngresados()
     {
         int cantPedidosIngresados = 0;
-        foreach (var pedido in listadoPedidos)
+        foreach (var pedido in ListadoPedidos)
         {
             if (pedido.EstadoActualDelPedido == EstadoPedido.Pendiente)
                 cantPedidosIngresados++;
@@ -185,7 +193,7 @@ public class Cadeteria
 
         if (pedidoAEliminar.EstadoActualDelPedido == EstadoPedido.Cancelado || pedidoAEliminar.EstadoActualDelPedido == EstadoPedido.Pendiente)
         {
-            listadoPedidos.Remove(pedidoAEliminar);
+            ListadoPedidos.Remove(pedidoAEliminar);
             return true;
         }
         return false;
@@ -195,7 +203,7 @@ public class Cadeteria
         var cadete = BuscarCadetePorId(idCadeteAEliminar);
         var pedidosDelCadete = new List<Pedido>();
         if (cadete is null) return false;
-        foreach (var p in listadoPedidos)
+        foreach (var p in ListadoPedidos)
         {
             if (p.Cadete != null && p.Cadete.Id == cadete.Id)
                 pedidosDelCadete.Add(p);
@@ -204,7 +212,7 @@ public class Cadeteria
         if (tienePedidosEntregados != null) return false;
         Pedido tienePedidosAsignados = pedidosDelCadete.FirstOrDefault(p => p.EstadoActualDelPedido == EstadoPedido.Asignado);
         if (tienePedidosAsignados != null) return false;
-        listadoCadetes.Remove(cadete);
+        ListadoCadetes.Remove(cadete);
         return true;
     }
 }
